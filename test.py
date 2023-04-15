@@ -1,18 +1,6 @@
 import cv2
 import numpy as np
-
-
-class Shape:
-    minX = 0
-    maxX = 0
-    minY = 0
-    maxY = 0
-
-    def __init__(self, minX, maxX, minY, maxY):
-        self.minX = minX
-        self.maxX = maxX
-        self.minY = minY
-        self.maxY = maxY
+from common.shape import Shape
 
 
 def get_mask():
@@ -26,6 +14,7 @@ def unique_count_app(a):
 
 def aabb_test(a: Shape, b: Shape) -> bool:
     return a.minX <= b.maxX and a.maxX >= b.minX and a.minY <= b.maxY and a.maxY >= b.minY
+
 
 def show_image(img, title = ''):
     cv2.imshow(title, img)
@@ -44,7 +33,7 @@ def show_image(img, title = ''):
 # Correlar las mascaritas
 # Establecer scoring y tal
 # Crear clase para detectar azul (HSV, hue)
-#
+
 
 img = cv2.imread('resources/test_detection/00014.png', cv2.IMREAD_ANYCOLOR)
 Irgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
