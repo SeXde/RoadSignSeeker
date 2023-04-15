@@ -30,7 +30,7 @@ for polygon in polygons[0]:
     res = poi.apply_filters([
         SizeFilter(width=(50, None), height=(0, None)),
         RatioFilter(1.5, 4),
-        DominantColorFilter(150, 200),
+        DominantColorFilter(hue=(150, 200), value=(150, None)),
     ])
 
     #cv2.rectangle(IMarked, (x, y), (x + w, y + h), IMarked.shape, 2)
