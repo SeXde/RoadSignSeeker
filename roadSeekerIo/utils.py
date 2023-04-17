@@ -1,6 +1,7 @@
 import cv2
 from pathlib import Path
 
+from common.poi import Poi
 from roadSeekerIo.panel import Panel
 from roadSeekerIo.paths import GENERATED_IMG_PATH
 
@@ -12,3 +13,8 @@ def save_panels(img_path: str, panels: [Panel]):
         (x, y) = panel.lower_edge
         cv2.putText(image, str(panel.score), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 233, 255), 1)
     cv2.imwrite("{}/{}".format(GENERATED_IMG_PATH, Path(img_path).name), image)
+
+
+def poi_to_panel(poi: Poi) -> Panel:
+    # TODO
+    return ""
