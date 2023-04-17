@@ -1,3 +1,4 @@
+from common.filter import apply_filters
 from common.filters.dominant_color_filter import DominantColorFilter
 from common.filters.size_filter import SizeFilter
 from common.poi import Poi
@@ -27,7 +28,7 @@ for polygon in polygons[0]:
 
     poi = Poi(Shape(x, y, w, h), Irgb)
 
-    res = poi.apply_filters([
+    res = apply_filters(poi, [
         SizeFilter(width=(50, None), height=(0, None)),
         RatioFilter(1.5, 4),
         DominantColorFilter(hue=(150, 200), value=(150, None)),
@@ -35,7 +36,7 @@ for polygon in polygons[0]:
 
     #cv2.rectangle(IMarked, (x, y), (x + w, y + h), IMarked.shape, 2)
     if res:
-        cv2.rectangle(IMarked, (x, y), (x + w, y + h), IMarked.shape, 2)
+       cv2.rectangle(IMarked, (x, y), (x + w, y + h), IMarked.shape, 2)
 
 
 show_image(IMarked)
