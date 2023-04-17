@@ -13,9 +13,9 @@ class Panel:
         self.lower_edge = lower_edge
         self.panel_type = panel_type
         self.score = round(score, 2)
-        self.__save_to_file(RESULT_FILE_NAME)
+        self._save_to_file(RESULT_FILE_NAME)
 
-    def __to_string(self) -> str:
+    def _to_string(self) -> str:
         return "{};{};{};{};{};{};{}".format(
             self.file_name,
             self.upper_edge[0],
@@ -26,6 +26,6 @@ class Panel:
             self.score
         ) + '\n'
 
-    def __save_to_file(self, file_name: str):
+    def _save_to_file(self, file_name: str):
         with open(file_name, 'a+') as f:
-            f.write(self.__to_string())
+            f.write(self._to_string())

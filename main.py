@@ -39,7 +39,7 @@ def detect_and_write_panels(image_path: str):
     image = cv2.imread(image_path)
     pois = detector.detect(image)
     filtered_pois = filter_pipeline.filter(pois)
-    panels = list(map(poi_to_panel, filtered_pois))
+    panels = list(map(lambda poi: poi_to_panel(poi, image_path), filtered_pois))
     save_panels(image_path, panels)
 
 

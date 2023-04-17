@@ -15,6 +15,7 @@ def save_panels(img_path: str, panels: [Panel]):
     cv2.imwrite("{}/{}".format(GENERATED_IMG_PATH, Path(img_path).name), image)
 
 
-def poi_to_panel(poi: Poi) -> Panel:
-    # TODO
-    return ""
+def poi_to_panel(poi: Poi, file_path: str) -> Panel:
+    # TODO compute score
+    return Panel(file_path=file_path, upper_edge=(poi.shape.x, poi.shape.y + poi.shape.h),
+                 lower_edge=(poi.shape.x + poi.shape.w, poi.shape.y), score=1)
