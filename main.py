@@ -6,7 +6,7 @@ from detector.default_detector import DefaultDetector
 from roadSeekerIo.utils import poi_to_panel, save_panels
 
 DETECTORS = {
-    'default': DefaultDetector(),  # TODO
+    'default': DefaultDetector(),
     'improved': "return our_impl"  # TODO
 }
 
