@@ -2,10 +2,11 @@ import argparse
 import os
 import cv2
 
+from detector.default_detector import DefaultDetector
 from roadSeekerIo.utils import poi_to_panel, save_panels
 
 DETECTORS = {
-    'default': "return mser_detect_impl",  # TODO
+    'default': DefaultDetector(),  # TODO
     'improved': "return our_impl"  # TODO
 }
 
@@ -36,8 +37,7 @@ def validate_and_build_args(program_args):
 
 
 def detect_and_write_panels(image_path: str):
-    image = cv2.imread(image_path)
-    pois = detector.detect(image)
+    pois = detector.detect(image_path)
     filtered_pois = filter_pipeline.filter(pois)
     panels = list(map(lambda poi: poi_to_panel(poi, image_path), filtered_pois))
     save_panels(image_path, panels)
@@ -57,9 +57,7 @@ if __name__ == "__main__":
         '--test_path', default="", help='Select the testing data dir')
 
     args = parser.parse_args()
-    detector_impl, filter_pipeline_impl = validate_and_build_args(args)
-    detector = "Create detector with detector_impl"  # TODO
-    filter_pipeline = "Create filter_pipeline with filter_pipeline_impl"  # TODO
+    detector, filter_pipeline = validate_and_build_args(args)
 
     image_paths = os.listdir(args.test_path)
     image_paths = list(filter(lambda path: 'png' in path or 'PNG' in path, image_paths))
