@@ -3,7 +3,7 @@ import os
 import cv2
 
 from detector.default_detector import DefaultDetector
-from roadSeekerIo.utils import poi_to_panel, save_panels
+from roadSeekerIo.utils import save_panels
 
 DETECTORS = {
     'default': DefaultDetector(),
@@ -39,8 +39,8 @@ def validate_and_build_args(program_args):
 def detect_and_write_panels(image_path: str):
     pois = detector.detect(image_path)
     filtered_pois = filter_pipeline.filter(pois)
-    panels = list(map(lambda poi: poi_to_panel(poi, image_path), filtered_pois))
-    save_panels(image_path, panels)
+    save_panels(image_path, filtered_pois)
+    map(lambda poi: poi.save_to_file(), pois)
 
 
 if __name__ == "__main__":

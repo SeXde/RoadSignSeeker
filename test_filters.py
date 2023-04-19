@@ -7,7 +7,8 @@ from common.shape import Shape
 import cv2
 import numpy as np
 
-img = cv2.imread('resources/test_detection/00016.png', cv2.IMREAD_ANYCOLOR)
+img_path = 'resources/test_detection/00016.png'
+img = cv2.imread(img_path, cv2.IMREAD_ANYCOLOR)
 Irgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 Igray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -26,7 +27,7 @@ def show_image(img, title=''):
 for polygon in polygons[0]:
     x, y, w, h = cv2.boundingRect(polygon)
 
-    poi = Poi(Shape(x, y, w, h), Irgb)
+    poi = Poi(Shape(x, y, w, h), Irgb, img_path)
 
     res = apply_filters(poi, [
         SizeFilter(width=(50, None), height=(0, None)),
