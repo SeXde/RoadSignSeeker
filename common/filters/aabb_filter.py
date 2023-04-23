@@ -13,37 +13,57 @@ class AabbMultiFilter(MultiFilter):
     def apply(self, pois: [Poi]) -> [Poi]:
         num_images = len(pois)
 
-        classes = np.zeros(num_images)
-        c = 1
+        if num_images == 0:
+            return []
 
+        pois = sorted(pois, reverse=True, key=lambda poi: poi.shape.w * poi.shape.h)
+
+        classes = np.zeros(num_images)
+
+        c = 1
         classes[0] = c
 
         for a_index in range(num_images):
-            shape_a = pois[a_index]
+            shape_a = pois[a_index].shape
 
-            for b_index in range(a_index, num_images):
-                shape_b = pois[b_index]
+            if classes[a_index] != 0:
+                pois[a_index].c = classes[a_index]
+                continue
 
-                if a_index == b_index:
-                    continue
+            for b_index in range(num_images):
+                shape_b = pois[b_index].shape
 
-                if self._aabb_test(shape_a.shape, shape_b.shape):
-                    classes[b_index] = classes[a_index]
+                if self._aabb_test(shape_a, shape_b):
+                    classes[a_index] = classes[b_index]
                 else:
                     c = c + 1
-                    classes[b_index] = c
-                    break
+
+            if classes[a_index] == 0:
+                c = c + 1
+                classes[a_index] = c
+
+            pois[a_index].c = classes[a_index]
 
         available_classes = np.unique(classes)
-        print(classes, available_classes)
-        selected = []
-        last_class = 1
-        for c_index in range(len(available_classes)):
-            clas = available_classes[c_index]
+        print(classes)
+
+        # 34, 7882
+
+        # (clas, index)
+        class_score = dict()
+
+        for clas in available_classes:
+            class_score[clas] = None
+
             for a_index in range(num_images):
                 img_class = classes[a_index]
-                if clas == img_class:
-                    rect = pois[a_index]
-                    selected.append(rect)
-                    break
+
+                if clas == img_class and (class_score[clas] is None or pois[a_index].score > class_score[clas][0]):
+                    class_score[clas] = (pois[a_index].score, a_index)
+
+        selected = []
+        for clas in available_classes:
+            _, index = class_score[clas]
+            selected.append(pois[int(index)])
+
         return selected
