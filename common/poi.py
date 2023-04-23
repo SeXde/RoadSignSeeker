@@ -20,12 +20,13 @@ class Poi:
         self.score = None
         self.file_path = file_path
         self.file_name = Path(file_path).name
+        self.c = -1
 
     def get_hsv_rect(self) -> [int, int, int]:
         if self._loaded_hsv:
             return self._hsv_image
 
-        self._hsv_image = cv2.cvtColor(self._rgb_image, cv2.COLOR_RGB2HSV_FULL)
+        self._hsv_image = cv2.cvtColor(self._rgb_image, cv2.COLOR_RGB2HSV)
         self._loaded_hsv = True
 
         return self._hsv_image

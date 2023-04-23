@@ -8,11 +8,12 @@ from roadSeekerIo.paths import GENERATED_IMG_PATH
 
 def save_panels(img_path: str, pois: [Poi]):
     image = cv2.imread(img_path)
-    map(lambda poi: _write_rectangles(image, poi), pois)
+    map(lambda poi: write_rectangles(image, poi), pois)
     cv2.imwrite("{}/{}".format(GENERATED_IMG_PATH, Path(img_path).name), image)
 
 
-def _write_rectangles(image, poi: Poi):
-    xl, yl = poi.get_lower_edge()
-    cv2.rectangle(image, poi.get_upper_edge(), (xl, yl), (0, 0, 255), 2)
-    cv2.putText(image, str(poi.score), (xl, yl - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 233, 255), 1)
+def write_rectangles(image, poi: Poi):
+    shape = poi.shape
+    xl, yl = (shape.x, shape.y)
+    cv2.rectangle(image, (shape.x, shape.y), (shape.x + shape.w, shape.y + shape.h), (255, 0, 0), 2)
+    cv2.putText(image, str(round(poi.score, 2)), (xl, yl + shape.h), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 233, 0), 2)
