@@ -1,7 +1,10 @@
+import cv2
+
 from common.multifilter import MultiFilter
 from common.poi import Poi
 import numpy as np
 from common.shape import Shape
+from roadSeekerIo.utils import draw_classes
 
 
 class AabbMultiFilter(MultiFilter):
@@ -20,11 +23,12 @@ class AabbMultiFilter(MultiFilter):
 
         classes = np.zeros(num_images)
 
-        c = 1
+        c = 0
         classes[0] = c
 
         for a_index in range(num_images):
             shape_a = pois[a_index].shape
+            c = c + 1
 
             if classes[a_index] != 0:
                 pois[a_index].c = classes[a_index]
@@ -35,8 +39,6 @@ class AabbMultiFilter(MultiFilter):
 
                 if self._aabb_test(shape_a, shape_b):
                     classes[a_index] = classes[b_index]
-                else:
-                    c = c + 1
 
             if classes[a_index] == 0:
                 c = c + 1
@@ -45,7 +47,7 @@ class AabbMultiFilter(MultiFilter):
             pois[a_index].c = classes[a_index]
 
         available_classes = np.unique(classes)
-        print(classes)
+        draw_classes(pois, classes)
 
         # 34, 7882
 

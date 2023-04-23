@@ -40,6 +40,6 @@ for polygon in polygons[0]:
 pois = apply_filters_pipeline(pois, default_pipeline)
 
 for poi in pois:
-    write_rectangles(IMarked, poi)
+    write_rectangles(IMarked, poi, poi.c)
 
 show_image(IMarked)
