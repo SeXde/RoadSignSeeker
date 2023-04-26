@@ -9,7 +9,8 @@ from roadSeekerIo.paths import GENERATED_IMG_PATH
 
 def save_panels(img_path: str, pois: [Poi]):
     image = cv2.imread(img_path)
-    map(lambda poi: write_rectangles(image, poi), pois)
+    for poi in pois:
+        write_rectangles(image, poi)
     cv2.imwrite("{}/{}".format(GENERATED_IMG_PATH, Path(img_path).name), image)
 
 

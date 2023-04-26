@@ -40,7 +40,8 @@ def detect_and_write_panels(image_path: str):
     pois = detector.detect(image_path)
     filtered_pois = filter_pipeline.filter(pois)
     save_panels(image_path, filtered_pois)
-    map(lambda poi: poi.save_to_file(), pois)
+    for poi in pois:
+        poi.save_to_file()
 
 
 if __name__ == "__main__":
@@ -61,4 +62,5 @@ if __name__ == "__main__":
 
     image_paths = os.listdir(args.test_path)
     image_paths = list(filter(lambda path: 'png' in path or 'PNG' in path, image_paths))
-    map(detect_and_write_panels, image_paths)
+    for image_path in image_paths:
+        detect_and_write_panels(image_path)
