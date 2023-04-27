@@ -81,3 +81,4 @@ class Poi:
 
     def get_lower_edge(self) -> (int, int):
         return self.shape.x + self.shape.w, self.shape.y
+
