@@ -19,7 +19,7 @@ class AabbMultiFilter(MultiFilter):
         if num_images == 0:
             return []
 
-        return self._classify_images(self._aabb_test, pois)
+        # return self._classify_images(self._aabb_test, pois)
 
         pois = sorted(pois, reverse=True, key=lambda poi: poi.shape.w * poi.shape.h)
 
