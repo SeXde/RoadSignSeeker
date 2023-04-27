@@ -1,11 +1,8 @@
-import numpy as np
-
 from common.poi import Poi
 from common.shape import Shape
-from common.filters.filters_pipeline import apply_filters_pipeline
 import cv2
 
-from pipelines.default_pipeline import default_pipeline
+from pipelines.default_pipeline import DefaultPipeline
 from roadSeekerIo.utils import write_rectangles
 
 img_path = 'resources/train_detection/00003.png'
@@ -37,7 +34,7 @@ for polygon in polygons[0]:
     pois = pois + [Poi(Shape(x, y, w, h), Irgb, img_path)]
 
 
-pois = apply_filters_pipeline(pois, default_pipeline)
+pois = DefaultPipeline().apply(pois)
 
 for poi in pois:
     write_rectangles(IMarked, poi, poi.c)

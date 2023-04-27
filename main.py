@@ -13,7 +13,7 @@ DETECTORS = {
 }
 
 FILTER_PIPELINES = {
-    'default': DefaultPipeline(),  # TODO
+    'default': DefaultPipeline(),
     'improved': "return improved pipeline impl"  # TODO
 }
 
