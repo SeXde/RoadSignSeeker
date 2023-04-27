@@ -14,12 +14,9 @@ class CorrelationFilter(Filter):
 
     def apply(self, poi: Poi) -> bool:
         hsv_rect = poi.get_hsv_rect()
-        hsv_rect_resized = cv2.resize(hsv_rect, (80, 40))
-        binary_image = cv2.inRange(hsv_rect_resized, self.lower_color, self.upper_color)
-
-        corr_arr = cv2.matchTemplate(binary_image, self.mask_image, cv2.TM_CCORR_NORMED)
-
+        mask = cv2.inRange(hsv_rect, self.lower_color, self.upper_color)
+        mask = cv2.resize(mask, self.mask_image.shape)
+        corr_arr = cv2.matchTemplate(self.mask_image, mask, cv2.TM_CCORR_NORMED)
         corr = corr_arr[0, 0]
         poi.score = corr
-
         return corr > self.limit

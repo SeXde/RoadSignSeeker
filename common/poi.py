@@ -73,9 +73,6 @@ class Poi:
         ) + '\n'
 
     def save_to_file(self):
-        if not os.path.exists(GENERATED_IMG_PATH):
-            os.makedirs(GENERATED_IMG_PATH)
-
         with open(RESULT_FILE_NAME, 'a+') as f:
             f.write(self._to_string())
 

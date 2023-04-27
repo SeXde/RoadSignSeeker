@@ -1,9 +1,10 @@
 import argparse
 import os
-import cv2
+import shutil
 
 from detector.default_detector import DefaultDetector
 from pipelines.default_pipeline import default_pipeline
+from roadSeekerIo.paths import GENERATED_IMG_PATH
 from roadSeekerIo.utils import save_panels
 
 DETECTORS = {
@@ -12,7 +13,7 @@ DETECTORS = {
 }
 
 FILTER_PIPELINES = {
-    'default': default_pipeline,  # TODO
+    'default': default_pipeline,
     'improved': "return improved pipeline impl"  # TODO
 }
 
@@ -61,7 +62,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     detector, filter_pipeline = validate_and_build_args(args)
-
+    if os.path.exists(GENERATED_IMG_PATH):
+        shutil.rmtree(GENERATED_IMG_PATH)
+    os.makedirs(GENERATED_IMG_PATH)
     image_paths = os.listdir(args.test_path)
     image_paths = list(filter(lambda path: 'png' in path or 'PNG' in path, image_paths))
     for image_path in image_paths:
