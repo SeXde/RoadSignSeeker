@@ -3,7 +3,6 @@ import os
 import shutil
 
 from detector.default_detector import DefaultDetector
-from pipelines.default_pipeline import default_pipeline
 from roadSeekerIo.paths import GENERATED_IMG_PATH
 from pipelines.default_pipeline import DefaultPipeline
 from roadSeekerIo.utils import save_panels
@@ -14,7 +13,7 @@ DETECTORS = {
 }
 
 FILTER_PIPELINES = {
-    'default': DefaultPipeline(mask_path="resources/RoadSign_Mask.png"),  # TODO
+    'default': DefaultPipeline(),
     'improved': "return improved pipeline impl"  # TODO
 }
 
