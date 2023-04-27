@@ -5,6 +5,7 @@ import shutil
 from detector.default_detector import DefaultDetector
 from pipelines.default_pipeline import default_pipeline
 from roadSeekerIo.paths import GENERATED_IMG_PATH
+from pipelines.default_pipeline import DefaultPipeline
 from roadSeekerIo.utils import save_panels
 
 DETECTORS = {
@@ -13,7 +14,7 @@ DETECTORS = {
 }
 
 FILTER_PIPELINES = {
-    'default': default_pipeline,
+    'default': DefaultPipeline(mask_path="resources/RoadSign_Mask.png"),  # TODO
     'improved': "return improved pipeline impl"  # TODO
 }
 
@@ -40,7 +41,7 @@ def validate_and_build_args(program_args):
 
 def detect_and_write_panels(image_path: str):
     pois = detector.detect(image_path)
-    filtered_pois = filter_pipeline(pois)
+    filtered_pois = filter_pipeline.apply(pois)
     print(image_path, len(filtered_pois))
     save_panels(image_path, filtered_pois)
     for poi in filtered_pois:

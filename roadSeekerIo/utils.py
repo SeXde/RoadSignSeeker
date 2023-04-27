@@ -26,7 +26,7 @@ def draw_classes(pois: [Poi], classes: [int]) -> None:
     available_classes = np.unique(classes)
     max_colors = len(available_classes)
 
-    colors = [(180 / max_colors) * i for i in range(0, max_colors)]
+    colors = generate_random_colors(max_colors)
 
     for poi_index in range(len(pois)):
         poi = pois[poi_index]
@@ -35,6 +35,10 @@ def draw_classes(pois: [Poi], classes: [int]) -> None:
         class_index = available_classes.tolist().index(c)
         color = hsv_to_rgb(colors[class_index] / 180, 1, 1)
         poi.c = [color[0] * 255, color[1] * 255, color[2] * 255]
+
+
+def generate_random_colors(max_colors: int) -> []:
+    return [(180 / max_colors) * i for i in range(0, max_colors)]
 
 
 def hsv_to_rgb(h, s, v):

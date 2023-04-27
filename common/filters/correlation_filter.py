@@ -19,4 +19,5 @@ class CorrelationFilter(Filter):
         corr_arr = cv2.matchTemplate(self.mask_image, mask, cv2.TM_CCORR_NORMED)
         corr = corr_arr[0, 0]
         poi.score = corr
+
         return corr > self.limit

@@ -8,7 +8,7 @@ import cv2
 from pipelines.default_pipeline import default_pipeline
 from roadSeekerIo.utils import write_rectangles
 
-img_path = 'resources/train_detection/00002.png'
+img_path = 'resources/train_detection/00003.png'
 img = cv2.imread(img_path, cv2.IMREAD_ANYCOLOR)
 Irgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 Igray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
