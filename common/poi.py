@@ -69,7 +69,7 @@ class Poi:
             xl,
             yl,
             self.panel_type,
-            self.score
+            '{0:.2g}'.format(self.score)
         ) + '\n'
 
     def save_to_file(self):
