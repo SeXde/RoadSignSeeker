@@ -1,4 +1,6 @@
 import cv2
+import numpy as np
+
 from common.poi import Poi
 from common.shape import Shape
 
@@ -11,8 +13,8 @@ class DefaultDetector:
         i_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         i_gray = cv2.equalizeHist(i_gray)
 
-        mser = cv2.MSER_create(delta=5, max_variation=0.5, max_area=20000)
-        regions = mser.detectRegions(i_gray)
+        mser = cv2.MSER_create(max_area=99000)
+        regions, _ = mser.detectRegions(i_gray)
         return list(map(lambda r: self._region_to_poi(r, i_rgb, img_path), regions))
 
     @staticmethod

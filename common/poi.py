@@ -1,8 +1,9 @@
+import os
 from pathlib import Path
 
 import cv2
 from common.shape import Shape
-from roadSeekerIo.paths import RESULT_FILE_NAME
+from roadSeekerIo.paths import RESULT_FILE_NAME, GENERATED_IMG_PATH
 
 
 class Poi:
@@ -17,7 +18,7 @@ class Poi:
         self._loaded_gray = False
         self._gray_image = None
         self.panel_type = 1
-        self.score = None
+        self.score = 0
         self.file_path = file_path
         self.file_name = Path(file_path).name
         self.c = -1
@@ -72,6 +73,9 @@ class Poi:
         ) + '\n'
 
     def save_to_file(self):
+        if not os.path.exists(GENERATED_IMG_PATH):
+            os.makedirs(GENERATED_IMG_PATH)
+
         with open(RESULT_FILE_NAME, 'a+') as f:
             f.write(self._to_string())
 
