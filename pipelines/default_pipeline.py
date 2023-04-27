@@ -1,6 +1,8 @@
 import numpy as np
 
 from common.filter import apply_filters
+from common.filters.aabb_filter import AabbMultiFilter
+from common.filters.area_aabb_based_filter import AreaScoreBasedFilter
 from common.filters.correlation_filter import CorrelationFilter
 from common.filters.nms_filter import NMSMultiFilter
 from common.filters.ratio_and_size_filter import RatioAndSizeFilter
@@ -25,6 +27,6 @@ class DefaultPipeline(Pipeline):
             if res:
                 valid_pois.append(poi)
 
-        valid_pois = apply_multifilters(valid_pois, [NMSMultiFilter()])
+        valid_pois = apply_multifilters(valid_pois, [AreaScoreBasedFilter()])
 
         return valid_pois
