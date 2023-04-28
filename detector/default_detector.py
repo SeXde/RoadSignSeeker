@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 
 from common.poi import Poi
 from common.shape import Shape

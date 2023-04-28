@@ -15,11 +15,11 @@ def save_panels(img_path: str, pois: [Poi]):
     cv2.imwrite("{}/{}".format(GENERATED_IMG_PATH, Path(img_path).name), image)
 
 
-def write_rectangles(image, poi: Poi, rect_color=(255, 0, 0)):
+def write_rectangles(image, poi: Poi, rect_color=(0, 0, 255)):
     shape = poi.shape
     xl, yl = (shape.x, shape.y)
     cv2.rectangle(image, (shape.x, shape.y), (shape.x + shape.w, shape.y + shape.h), rect_color, 2)
-    cv2.putText(image, str(round(poi.score, 2)), (xl, yl + shape.h), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 233, 0), 2)
+    cv2.putText(image, str(round(poi.score, 2)), (xl, yl + shape.h), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 233, 255), 2)
 
 
 def draw_classes(pois: [Poi], classes: [int]) -> None:

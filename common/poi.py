@@ -60,14 +60,12 @@ class Poi:
         return True
 
     def _to_string(self) -> str:
-        xu, yu = self.get_upper_edge()
-        xl, yl = self.get_lower_edge()
         return "{};{};{};{};{};{};{}".format(
             self.file_name,
-            xu,
-            yu,
-            xl,
-            yl,
+            self.shape.x,
+            self.shape.y,
+            self.shape.x + self.shape.w,
+            self.shape.y + self.shape.h,
             self.panel_type,
             "%.2f" % round(self.score, 2)
         ) + '\n'
@@ -75,10 +73,4 @@ class Poi:
     def save_to_file(self):
         with open(RESULT_FILE_NAME, 'a+') as f:
             f.write(self._to_string())
-
-    def get_upper_edge(self) -> (int, int):
-        return self.shape.x, self.shape.y + self.shape.h
-
-    def get_lower_edge(self) -> (int, int):
-        return self.shape.x + self.shape.w, self.shape.y
 
