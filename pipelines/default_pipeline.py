@@ -18,7 +18,7 @@ class DefaultPipeline(Pipeline):
 
         for poi in pois:
             res = apply_filters(poi, [
-                RatioAndSizeFilter(0.8, 3.92),
+                RatioAndSizeFilter(0.8, 3.92, 40),
                 CorrelationFilter(0.8, self.img_mask, [100, 150, 0], [140, 255, 255])
             ])
 
