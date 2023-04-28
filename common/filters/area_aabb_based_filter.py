@@ -37,6 +37,7 @@ class AreaScoreBasedFilter(MultiFilter):
                 dictionary[clas] = dictionary[clas] + [poi]
             else:
                 dictionary[clas] = [poi]
+
         for key, pois in dictionary.items():
             new_pois = new_pois + [max(pois, key=lambda desired_poi: desired_poi.score)]
         return new_pois
