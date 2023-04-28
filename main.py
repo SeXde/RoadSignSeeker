@@ -3,6 +3,7 @@ import os
 import shutil
 
 from detector.default_detector import DefaultDetector
+from pipelines.nms_pipeline import NMSPipeline
 from roadSeekerIo.paths import GENERATED_IMG_PATH
 from pipelines.default_pipeline import DefaultPipeline
 from roadSeekerIo.utils import save_panels
@@ -14,7 +15,7 @@ DETECTORS = {
 
 FILTER_PIPELINES = {
     'default': DefaultPipeline(),
-    'improved': "return improved pipeline impl"  # TODO
+    'nms': NMSPipeline()  # TODO
 }
 
 
