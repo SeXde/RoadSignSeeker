@@ -13,11 +13,24 @@ import sklearn
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 from classifier.bayes_classifier import BayesClassifier
+from classifier.knn_classifier import KnnClassifier
+from classifier.naive_bayes_classifier import NaiveBayesClassifier
 from dimension.lda_dim_reduction import LdaDimReduction
+from dimension.pca_dim_reduction import PcaDimReduction
 from featureExtractor.feature_extractor import FeatureExtractor
 from roadSeekerIo.paths import classes
 from threshold.default_threshold import DefaultThreshold
 
+CLASSIFIERS = {
+    'default': BayesClassifier(),
+    'knn': KnnClassifier(),
+    'naive': NaiveBayesClassifier()
+}
+
+DIMENSION = {
+    'default': LdaDimReduction(),
+    'pca': PcaDimReduction()
+}
 
 def plot_confusion_matrix(cm, title='Confusion matrix', cmap=plt.cm.get_cmap('Blues')):
     '''
@@ -42,12 +55,33 @@ def plot_confusion_matrix(cm, title='Confusion matrix', cmap=plt.cm.get_cmap('Bl
                         horizontalalignment='center',
                         verticalalignment='center')
 
+
+def validate_and_build_args(program_args):
+    chosen_classifier = CLASSIFIERS.get(program_args.classifier)
+
+    if chosen_classifier is None:
+        raise ValueError("{} is not a valid classifier".format(program_args.classifier))
+
+    chosen_dimension = DIMENSION.get(program_args.dimension)
+
+    if chosen_dimension is None:
+        raise ValueError("{} is not a valid dimension reduction system".format(program_args.dimension))
+
+    if not os.path.exists(program_args.train_path):
+        raise ValueError("Train path {} does not exist".format(program_args.train_path))
+
+    if not os.path.exists(program_args.validation_path):
+        raise ValueError("Validation path {} does not exist".format(program_args.validation_path))
+
+    return chosen_classifier, chosen_dimension
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description='Trains and executes a given classifier for OCR over testing images')
-    parser.add_argument(
-        '--classifier', type=str, default="", help='Classifier string name')
+    parser.add_argument('--classifier', type=str, nargs=1, default="default", help='List of implemented classifiers: {}'.format(list(CLASSIFIERS.keys())))
+    parser.add_argument('--dimension', type=str, nargs=1, default="default",
+                        help='List of implemented dimension reduction systems: {}'.format(list(DIMENSION.keys())))
     parser.add_argument(
         '--train_path', default="resources/train_ocr", help='Select the training data dir')
     parser.add_argument(
@@ -61,7 +95,7 @@ if __name__ == "__main__":
     # umbralizar imágenes, pasar findContours y luego redimensionar)
     default_threshold = DefaultThreshold()
     feature_extractor = FeatureExtractor()
-    lda = LinearDiscriminantAnalysis()
+    classifier, dimension = validate_and_build_args(args)
     c_train = []
     e_train = []
     for path, letter in classes.items():
@@ -74,10 +108,9 @@ if __name__ == "__main__":
             train_contours = default_threshold.threshold_image(image_gray, True)
             feature_extractor.extract(train_contours, ord(letter), image_gray, c_train, e_train)
 
-    lda_dim_reduction = LdaDimReduction()
-    lda.fit(c_train, e_train)
-    cr_train = lda_dim_reduction.reduce(c_train, lda)
-    bayes_classifier = BayesClassifier(cr_train, e_train)
+    dimension.create(c_train, e_train)
+    cr_train = dimension.reduce(c_train)
+    classifier.create(cr_train, e_train)
 
     gt_labels = []
     predicted_labels = []
@@ -91,8 +124,8 @@ if __name__ == "__main__":
             validation_contours = default_threshold.threshold_image(image_gray, True)
             c_validation = []
             feature_extractor.extract(validation_contours, ord(letter), image_gray, c_validation, [])
-            c_validation = lda_dim_reduction.reduce(c_validation, lda)
-            predicted_labels.append(bayes_classifier.classify(c_validation))
+            c_validation = dimension.reduce(c_validation)
+            predicted_labels.append(classifier.classify(c_validation))
 
 
     # 5) Evaluar los resultados
