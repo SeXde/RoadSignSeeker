@@ -108,6 +108,16 @@ if __name__ == "__main__":
     lda.fit(c, e)
     cr = lda_dim_reduction.reduce(c, lda)
     bayes_classifier = BayesClassifier(cr, e)
+
+    a_image = cv2.imread("resources/validation_ocr/may/H/0000.png")
+    a_image_gray = cv2.cvtColor(a_image, cv2.COLOR_BGR2GRAY)
+    contours = default_threshold.threshold_image(a_image_gray)
+    print("Longitus 2: ", len(contours))
+    c = []
+    feature_extractor.extract(contours, 0, a_image_gray, c, [])
+    xr = lda_dim_reduction.reduce(c, lda)
+    print("Esta shiat debería ser H: {}".format(chr(bayes_classifier.classify(xr))))
+
     ocr_path = "/test_ocr_panels"
     panels = os.listdir(args.train_path + ocr_path)
     panels = list(filter(lambda p: 'png' in p or 'PNG' in p, panels))
@@ -122,12 +132,10 @@ if __name__ == "__main__":
             for letter in line:
                 cv2.drawContours(image, [letter], -1, (0, 255, 0), 2)
                 c = []
-                feature_extractor.extract(letter, 0, image_gray, c, [])
+                feature_extractor.extract([letter], 0, image_gray, c, [])
                 xr = lda_dim_reduction.reduce(c, lda)
                 text = text + chr(bayes_classifier.classify(xr))
             text = text + "+" + text
-            cv2.imshow("sadf", image)
-            cv2.waitKey(0)
         print(text)
 
 
