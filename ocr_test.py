@@ -25,7 +25,8 @@ def show_image(image, title = ''):
 
 
 def find_contours(image, class_check: int, C: [], E: []) -> []:
-    mask = cv2.adaptiveThreshold(image, 255, cv2.BORDER_REPLICATE, cv2.THRESH_BINARY, 5, -50)
+    mask = cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                          cv2.THRESH_BINARY, 199, 5)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 1))  # Sacadita
 
