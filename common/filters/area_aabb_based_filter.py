@@ -4,6 +4,9 @@ from common.shape import Shape
 
 
 class AreaScoreBasedFilter(MultiFilter):
+    """
+    A better version of the AABBFilter.
+    """
 
     @staticmethod
     def _aabb(a: Shape, b: Shape):

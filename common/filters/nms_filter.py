@@ -5,7 +5,10 @@ from common.poi import Poi
 
 
 class NMSMultiFilter(MultiFilter):
-
+    """
+    Uses the NMS algorithm to filter overlapping Pois.
+    This implementation is not complete and is not working correctly in some cases.
+    """
 
     def apply(self, pois: [Poi]) -> [Poi]:
         # return an empty list, if no boxes given

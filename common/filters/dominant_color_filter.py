@@ -5,6 +5,10 @@ from common.poi import Poi
 
 
 class DominantColorFilter(Filter):
+    """
+    This implementation gets the dominant color of an image, and then checks it against the given color params.
+    This filter is not recommended as it filters too many valid Pois.
+    """
     def __init__(self, hue: (int | None, int | None) = (None, None),
                  saturation: (int | None, int | None) = (None, None),
                  value: (int | None, int | None) = (None, None)

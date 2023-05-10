@@ -7,6 +7,10 @@ from common.poi import Poi
 
 
 class CorrelationFilter(Filter):
+    """
+    This filter correlates the Poi with a mask, this operation generates a score.
+    If the score is below the limit constructor param, the Poi is filtered out.
+    """
     def __init__(self, limit: float, mask_image: [int, int, int], lower_color: (int, int, int), upper_color: (int, int, int)):
         self.limit = limit
         self.mask_image = mask_image

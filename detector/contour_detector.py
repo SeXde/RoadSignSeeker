@@ -1,13 +1,15 @@
 import cv2
-import numpy as np
 
-from common.debug_image import debug_image
 from common.poi import Poi
-from common.shape import Shape
 from detector.detector import Detector
 
 
 class ContourDetector(Detector):
+    """
+    Detects Pois using findContours.
+    FindContours always returns non-overlapping Pois
+    Constructor params allow to generate the contours using different color masks
+    """
     def __init__(self, low_color: (int, int, int), high_color: (int, int, int)):
         self.low_color = low_color
         self.high_color = high_color
