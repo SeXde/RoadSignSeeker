@@ -4,6 +4,7 @@ import shutil
 
 from detector.contour_detector import ContourDetector
 from detector.default_detector import DefaultDetector
+from detector.white_contour_detector import WhiteContourDetector
 from pipelines.nms_pipeline import NMSPipeline
 from roadSeekerIo.paths import GENERATED_IMG_PATH
 from pipelines.default_pipeline import DefaultPipeline
@@ -12,9 +13,13 @@ from roadSeekerIo.utils import save_panels
 lower_blue = (100, 200, 50)
 high_blue = (150, 255, 255)
 
+lower_white = (0, 200, 200)
+high_white = (180, 255, 255)
+
 DETECTORS = {
     'default': DefaultDetector(),
-    'improved': ContourDetector(lower_blue, high_blue)
+    'contour-blue': ContourDetector(lower_blue, high_blue),
+    'contour-white': WhiteContourDetector(lower_white, high_white)
 }
 
 FILTER_PIPELINES = {
@@ -56,7 +61,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Trains and executes a given detector over a set of testing images')
     parser.add_argument(
-        '--detector', type=str, nargs=1, default="improved", help='Detector implementation: {}'.format(list(DETECTORS.keys())))
+        '--detector', type=str, nargs=1, default="contour-blue", help='Detector implementation: {}'.format(list(DETECTORS.keys())))
     parser.add_argument(
         '--filter_pipeline', type=str, nargs=1, default="default",
         help='Filter pipeline implementation: {}'.format(list(FILTER_PIPELINES.keys())))
