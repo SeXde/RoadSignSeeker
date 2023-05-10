@@ -5,12 +5,13 @@
 
 import argparse
 import os
+from time import time
 
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import sklearn
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 from classifier.bayes_classifier import BayesClassifier
 from classifier.knn_classifier import KnnClassifier
@@ -98,6 +99,7 @@ if __name__ == "__main__":
     classifier, dimension = validate_and_build_args(args)
     c_train = []
     e_train = []
+    time_before = time()
     for path, letter in classes.items():
         image_paths = os.listdir(args.train_path + path)
         image_paths = list(filter(lambda p: 'png' in p or 'PNG' in p, image_paths))
@@ -117,6 +119,7 @@ if __name__ == "__main__":
     for path, letter in classes.items():
         image_paths = os.listdir(args.validation_path + path)
         image_paths = list(filter(lambda p: 'png' in p or 'PNG' in p, image_paths))
+        print("loading path: {}{}".format(args.validation_path, path))
         for image_path in image_paths:
             gt_labels.append(letter)
             image = cv2.imread("{}{}/{}".format(args.validation_path, path, image_path))
@@ -129,8 +132,13 @@ if __name__ == "__main__":
 
 
     # 5) Evaluar los resultados
+    print("Elapsed time = {} seconds".format(round(time() - time_before, 2)))
     accuracy = sklearn.metrics.accuracy_score(gt_labels, predicted_labels)
     print("Accuracy = ", accuracy)
     f1_macro = sklearn.metrics.f1_score(gt_labels, predicted_labels, average='macro')
     print("F1 macro = ", f1_macro)
+    confusion_matrix = confusion_matrix(gt_labels, predicted_labels)
+    ConfusionMatrixDisplay(confusion_matrix).plot()
+    plt.show()
+
 
