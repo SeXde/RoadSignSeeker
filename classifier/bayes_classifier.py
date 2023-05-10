@@ -15,4 +15,4 @@ class BayesClassifier(Classifier):
     def classify(self, xr):
         xr = np.array(xr, dtype=np.float32)
         result = self.bayes.predict(xr)
-        return result[1][0][0]
+        return chr(result[1][0][0])
