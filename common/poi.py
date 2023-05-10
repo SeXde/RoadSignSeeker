@@ -1,9 +1,8 @@
-import os
 from pathlib import Path
 
 import cv2
 from common.shape import Shape
-from roadSeekerIo.paths import RESULT_FILE_NAME, GENERATED_IMG_PATH
+from helpers.paths import RESULT_FILE_NAME
 
 
 class Poi:

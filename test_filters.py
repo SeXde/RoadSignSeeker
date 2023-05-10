@@ -10,7 +10,7 @@ from detector.contour_detector import ContourDetector
 from detector.default_detector import DefaultDetector
 from detector.white_contour_detector import WhiteContourDetector
 from pipelines.default_pipeline import DefaultPipeline
-from roadSeekerIo.utils import write_rectangles
+from helpers.utils import write_rectangles
 
 img_path = 'resources/test_detection/00010.png'
 img = cv2.imread(img_path, cv2.IMREAD_ANYCOLOR)

@@ -4,7 +4,7 @@ from common.multifilter import MultiFilter
 from common.poi import Poi
 import numpy as np
 from common.shape import Shape
-from roadSeekerIo.utils import draw_classes, generate_random_colors, hsv_to_rgb
+from helpers.utils import draw_classes, generate_random_colors, hsv_to_rgb
 
 
 class AabbMultiFilter(MultiFilter):
