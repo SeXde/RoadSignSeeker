@@ -19,6 +19,10 @@ def get_x(contour):
     x, _, _, _ = cv2.boundingRect(contour)
     return x
 
+def get_y(contour):
+    _, y, _, _ = cv2.boundingRect(contour)
+    return y
+
 
 def detect_lines(contours) -> []:
     lines = []
@@ -38,4 +42,5 @@ def detect_lines(contours) -> []:
         line = sorted(line, key=lambda c: get_x(c))
         lines.append(line)
         found_lines = len(lines) > 4 or len(inlines) == 0
+    lines = sorted(lines, key=lambda l: get_y(l[0]))
     return lines

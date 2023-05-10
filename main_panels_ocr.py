@@ -126,9 +126,9 @@ if __name__ == "__main__":
                 xr = lda_dim_reduction.reduce(c, lda)
                 text = text + chr(bayes_classifier.classify(xr))
             text = text + "+" + text
+            cv2.imshow("sadf", image)
+            cv2.waitKey(0)
         print(text)
-        cv2.imshow("sadf", image)
-        cv2.waitKey(0)
 
 
 
