@@ -5,8 +5,6 @@ from dimension.dim_reduction import DimReduction
 
 class LdaDimReduction(DimReduction):
 
-    def reduce(self, c, e) -> []:
-        lda = LinearDiscriminantAnalysis()
-        lda.fit(c, e)
+    def reduce(self, c, lda) -> []:
         cr = lda.transform(c)
         return cr

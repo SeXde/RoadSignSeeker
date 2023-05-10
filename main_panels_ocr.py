@@ -2,7 +2,9 @@ import argparse
 import os
 
 import cv2
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
+import ransac.ransac
 from classifier.bayes_classifier import BayesClassifier
 from dimension.lda_dim_reduction import LdaDimReduction
 from featureExtractor.feature_extractor import FeatureExtractor
@@ -87,29 +89,51 @@ if __name__ == "__main__":
     args = parser.parse_args()
     # todo check args
     # Train classifier
-    bayes_classifier = None
+    default_threshold = DefaultThreshold()
+    feature_extractor = FeatureExtractor()
+    lda = LinearDiscriminantAnalysis()
     c = []
     e = []
     for path, letter in classes.items():
         image_paths = os.listdir(args.train_path + path)
         image_paths = list(filter(lambda p: 'png' in p or 'PNG' in p, image_paths))
+        print("loading path: {}{}".format(args.train_path, path))
         for image_path in image_paths:
-            print("loading image: {}{}/{}".format(args.train_path, path, image_path))
             image = cv2.imread("{}{}/{}".format(args.train_path, path, image_path))
             image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            default_threshold = DefaultThreshold()
             contours = default_threshold.threshold_image(image_gray)
-            feature_extractor = FeatureExtractor()
             feature_extractor.extract(contours, ord(letter), image_gray, c, e)
 
     lda_dim_reduction = LdaDimReduction()
-    cr = lda_dim_reduction.reduce(c, e)
+    lda.fit(c, e)
+    cr = lda_dim_reduction.reduce(c, lda)
     bayes_classifier = BayesClassifier(cr, e)
+    ocr_path = "/test_ocr_panels"
+    panels = os.listdir(args.train_path + ocr_path)
+    panels = list(filter(lambda p: 'png' in p or 'PNG' in p, panels))
+    for panel in panels:
+        print("processing panel: {}{}/{}".format(args.train_path, ocr_path, panel))
+        image = cv2.imread("{}{}/{}".format(args.train_path, ocr_path, panel))
+        image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        contours = default_threshold.threshold_image(image_gray)
+        lines = ransac.ransac.detect_lines(contours)
+        text = ""
+        for line in lines:
+            for letter in line:
+                cv2.drawContours(image, [letter], -1, (0, 255, 0), 2)
+                c = []
+                feature_extractor.extract(letter, 0, image_gray, c, [])
+                xr = lda_dim_reduction.reduce(c, lda)
+                text = text + chr(bayes_classifier.classify(xr))
+            text = text + "+" + text
+        print(text)
+        cv2.imshow("sadf", image)
+        cv2.waitKey(0)
 
 
 
 
-    
+
 
 
 

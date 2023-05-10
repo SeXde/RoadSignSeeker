@@ -13,5 +13,6 @@ class BayesClassifier(Classifier):
         self.bayes.train(cr, cv2.ml.ROW_SAMPLE, e)
 
     def classify(self, xr):
+        xr = np.array(xr, dtype=np.float32)
         result = self.bayes.predict(xr)
         return result[1][0][0]
