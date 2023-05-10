@@ -4,9 +4,7 @@ import numpy as np
 
 class FeatureExtractor:
 
-    def extract(self, contours, class_id, image):
-        C = []
-        E = []
+    def extract(self, contours, class_id, image, C, E):
         for cont in contours:
             x, y, w, h = cv2.boundingRect(cont)
 
@@ -31,4 +29,3 @@ class FeatureExtractor:
 
             C.append(c)
             E.append(class_id)
-        return C, E
