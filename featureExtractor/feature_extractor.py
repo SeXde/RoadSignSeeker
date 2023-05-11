@@ -1,10 +1,15 @@
+from random import seed, random
+
 import cv2
 import numpy as np
+
+from common.debug_image import debug_image
 
 
 class FeatureExtractor:
 
-    def extract(self, contours, class_id, image, C, E):
+    def extract(self, contours, class_id, image, C, E, klk=False):
+        image = np.uint8(image > 160)*255
         for cont in contours:
             x, y, w, h = cv2.boundingRect(cont)
 
@@ -24,8 +29,6 @@ class FeatureExtractor:
             padded_im = np.pad(im_rect, [v_pad, h_pad], mode='constant', constant_values=(255, 255))
 
             resized_im = cv2.resize(padded_im, (25, 25))
-
             c = np.array(resized_im.flatten())
-
             C.append(c)
             E.append(class_id)
