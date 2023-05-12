@@ -64,3 +64,5 @@ classes = {
     '/min/y': 'y',
     '/min/z': 'z',
 }
+
+OCR_PATH = "generated/ocr"
