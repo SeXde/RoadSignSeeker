@@ -1,19 +1,14 @@
 import argparse
 import os
 
-import cv2
-
 from classifier.bayes_classifier import BayesClassifier
 from classifier.knn_classifier import KnnClassifier
 from classifier.naive_bayes_classifier import NaiveBayesClassifier
 from dimension.lda_dim_reduction import LdaDimReduction
 from dimension.pca_dim_reduction import PcaDimReduction
-from featureExtractor.feature_extractor import FeatureExtractor
+from helpers.paths import classes, OCR_PATH
+from helpers.utils import read_panels_and_build_classes, read_panels
 from ocr.panel_ocr import PanelTextOcr
-from ransac import line_detector
-from roadSeekerIo.paths import classes, OCR_PATH
-from roadSeekerIo.utils import read_panels_and_build_classes, read_panels
-from threshold.default_threshold import DefaultThreshold
 
 CLASSIFIERS = {
     'default': BayesClassifier(),
@@ -59,6 +54,9 @@ if __name__ == "__main__":
         '--train_path', default="resources/train_ocr", help='Select the training data dir')
     parser.add_argument(
         '--panels_path', default="resources/test_ocr_panels", help='Select the panels data dir')
+    parser.add_argument(
+        '--show_image', default=False, help='True if you want yo display detected text inside panel. Use "n" '
+                                           'to skip images')
 
     args = parser.parse_args()
     classifier, dimension = validate_and_build_args(args)
@@ -76,7 +74,7 @@ if __name__ == "__main__":
         class_path_image_names = os.listdir(class_path)
         train_images_bgr = train_images_bgr + list(
             map(lambda p: read_panels_and_build_classes(class_path, p, class_letter, letters),
-                list(filter(lambda p: 'png' in p or 'PNG' in p, class_path_image_names)))
+                filter(lambda p: 'png' in p or 'PNG' in p, class_path_image_names))
             )
 
     print("Training ocr with {} images ...".format(len(train_images_bgr)))
@@ -88,5 +86,6 @@ if __name__ == "__main__":
     print("Successfully loaded {} panel images".format(len(panel_images_bgr)))
     for panel_name, panel_image_bgr in zip(panel_names, panel_images_bgr):
         x, y, _ = panel_image_bgr.shape
-        panel_ocr.classify_panel(panel_image_bgr, (0, 0, x - 1, y - 1), panel_name, output_file=ocr_path_result)
+        panel_ocr.classify_panel(panel_image_bgr, (0, 0, x - 1, y - 1), panel_name, output_file=ocr_path_result,
+                                 show_image=args.show_image)
     print("All panels has been classified!")

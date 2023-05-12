@@ -36,7 +36,7 @@ class PanelTextOcr:
         cr = self.dimension.reduce(c)
         self.classifier.create(cr, e)
 
-    def classify_panel(self, image_bgr, panel_coordinates, image_bgr_name, output_file=None):
+    def classify_panel(self, image_bgr, panel_coordinates, image_bgr_name, output_file=None, show_image=False):
         x, y, w, h = panel_coordinates
         panel_bgr = image_bgr[x: x + w, y: y + h]
         panel_rgb = cv2.cvtColor(panel_bgr, cv2.COLOR_BGR2RGB)
@@ -62,4 +62,5 @@ class PanelTextOcr:
         if output_file is not None:
             with open(output_file, 'a+') as f:
                 f.write(panel_result)
-        debug_image(panel_rgb)
+        if show_image:
+            debug_image(panel_rgb)

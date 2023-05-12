@@ -13,6 +13,7 @@ def save_panels(img_path: str, pois: [Poi]):
     for poi in pois:
         write_rectangles(image, poi)
     cv2.imwrite("{}/{}".format(GENERATED_IMG_PATH, Path(img_path).name), image)
+    return image
 
 
 def write_rectangles(image, poi: Poi, rect_color=(0, 0, 255)):

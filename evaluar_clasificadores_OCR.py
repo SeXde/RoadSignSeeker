@@ -19,7 +19,7 @@ from classifier.naive_bayes_classifier import NaiveBayesClassifier
 from dimension.lda_dim_reduction import LdaDimReduction
 from dimension.pca_dim_reduction import PcaDimReduction
 from featureExtractor.feature_extractor import FeatureExtractor
-from roadSeekerIo.paths import classes
+from helpers.paths import classes
 from threshold.default_threshold import DefaultThreshold
 
 CLASSIFIERS = {
