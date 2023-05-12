@@ -42,7 +42,7 @@ class LineDetector:
             new_contours = []
             sy, ey = (0, 200)
             sx, ex = model.predict_x([sy, ey])
-            cv2.line(image_rgb, (int(sx), sy), (int(ex), ey), (225, 242, 70), 1)
+            cv2.line(image_rgb, (round(sx), sy), (round(ex), ey), (225, 242, 70), 1)
             for i in range(len(inliers)):
                 if inliers[i]:
                     line.append(contours[i])

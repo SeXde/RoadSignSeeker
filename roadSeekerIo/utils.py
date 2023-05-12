@@ -45,8 +45,8 @@ def hsv_to_rgb(h, s, v):
     if s == 0.0:
         return v, v, v
 
-    i = int(h*6.)  # XXX assume int() truncates!
-    f = (h*6.)-i
+    i = int(h * 6.)  # XXX assume int() truncates!
+    f = (h * 6.) - i
     p, q, t = v * (1. - s), v * (1. - s * f), v * (1. - s * (1. - f))
     i %= 6
 
@@ -62,3 +62,13 @@ def hsv_to_rgb(h, s, v):
         return t, p, v
     if i == 5:
         return v, p, q
+
+
+def read_panels_and_build_classes(panel_path, panel_file_name, class_name, classes):
+    panel = read_panels(panel_path, panel_file_name)
+    classes.append(class_name)
+    return panel
+
+
+def read_panels(panel_path, panel_file_name):
+    return cv2.imread("{}/{}".format(panel_path, panel_file_name))
