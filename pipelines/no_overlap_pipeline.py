@@ -1,16 +1,14 @@
 import numpy as np
 
 from common.filter import apply_filters
-from common.filters.area_aabb_based_filter import AreaScoreBasedFilter
 from common.filters.correlation_filter import CorrelationFilter
 from common.filters.ratio_and_size_filter import RatioAndSizeFilter
-from common.multifilter import apply_multifilters
 from common.poi import Poi
-from helpers.colors import HIGH_BLUE, LOW_BLUE
 from pipelines.pipeline import Pipeline
+from helpers.colors import HIGH_BLUE, LOW_BLUE
 
 
-class DefaultPipeline(Pipeline):
+class NoOverlapPipeline(Pipeline):
     def __init__(self):
         self.img_mask = np.full((1000, 1000), 255, dtype=np.uint8)
 
@@ -25,7 +23,5 @@ class DefaultPipeline(Pipeline):
 
             if res:
                 valid_pois.append(poi)
-
-        valid_pois = apply_multifilters(valid_pois, [AreaScoreBasedFilter()])
 
         return valid_pois

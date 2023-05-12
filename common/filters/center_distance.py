@@ -4,6 +4,9 @@ import math
 
 
 class CenterDistance(MultiFilter):
+    """
+    Unused and incomplete implementation of a filter by center distance.
+    """
     def __init__(self, max_distance: float, image_size: (int, int)):
         self.max_distance = max_distance
 
@@ -32,8 +35,6 @@ class CenterDistance(MultiFilter):
                 if distance > self.max_distance:
                     # TODO: Handle classes (?)
                     valid_pois.append(pois[a_index])
-
-
 
         return []
 

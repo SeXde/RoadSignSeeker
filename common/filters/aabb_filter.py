@@ -4,10 +4,15 @@ from common.multifilter import MultiFilter
 from common.poi import Poi
 import numpy as np
 from common.shape import Shape
-from roadSeekerIo.utils import draw_classes, generate_random_colors, hsv_to_rgb
+from helpers.utils import draw_classes, generate_random_colors, hsv_to_rgb
 
 
 class AabbMultiFilter(MultiFilter):
+    """
+    Filters the Poi using the AABB algorithm.
+        (https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection)
+    This implementation is not complete, and is not working correctly in some cases of overlaps.
+    """
 
     @staticmethod
     def _aabb_test(a: Shape, b: Shape) -> bool:

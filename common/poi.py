@@ -1,12 +1,17 @@
-import os
 from pathlib import Path
 
 import cv2
 from common.shape import Shape
-from roadSeekerIo.paths import RESULT_FILE_NAME, GENERATED_IMG_PATH
+from helpers.paths import RESULT_FILE_NAME
 
 
 class Poi:
+    """
+    Class that represents a Point Of Interest in an image.
+    Also allows to operate in the image, like getting the image in RGB, HSV, grayscale...
+    Getting the image in different color schemes is a lazy process,
+    which means that different color schemes are not processed until requested.
+    """
     def __init__(self, shape: Shape, full_rgb_image: [int], file_path: str):
         self.shape = shape
 

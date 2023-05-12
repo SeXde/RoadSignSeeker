@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 
 from common.poi import Poi
-from roadSeekerIo.paths import GENERATED_IMG_PATH
+from helpers.paths import GENERATED_IMG_PATH
 
 
 def save_panels(img_path: str, pois: [Poi]):

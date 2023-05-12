@@ -3,6 +3,9 @@ from common.poi import Poi
 
 
 class SizeFilter(Filter):
+    """
+    Filters the Poi by width and height
+    """
     def __init__(self, width: (int | None, int | None), height: (int | None, int | None)):
         self.min_width = width[0]
         self.max_width = width[1]
