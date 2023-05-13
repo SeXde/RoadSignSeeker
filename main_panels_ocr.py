@@ -11,24 +11,24 @@ from helpers.utils import read_panels_and_build_classes, read_panels
 from ocr.panel_ocr import PanelTextOcr
 
 CLASSIFIERS = {
-    'default': BayesClassifier(),
+    'bayes': BayesClassifier(),
     'knn': KnnClassifier(),
     'naive': NaiveBayesClassifier()
 }
 
 DIMENSION = {
-    'default': LdaDimReduction(),
+    'lda': LdaDimReduction(),
     'pca': PcaDimReduction()
 }
 
 
 def validate_and_build_args(program_args):
-    chosen_classifier = CLASSIFIERS.get(program_args.classifier)
+    chosen_classifier = CLASSIFIERS.get(str(program_args.classifier))
 
     if chosen_classifier is None:
         raise ValueError("{} is not a valid classifier".format(program_args.classifier))
 
-    chosen_dimension = DIMENSION.get(program_args.dimension)
+    chosen_dimension = DIMENSION.get(str(program_args.dimension))
 
     if chosen_dimension is None:
         raise ValueError("{} is not a valid dimension reduction system".format(program_args.dimension))
@@ -46,9 +46,9 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description='Trains and executes a given classifier for OCR over testing images')
-    parser.add_argument('--classifier', type=str, nargs=1, default="default",
+    parser.add_argument('--classifier', type=str, default="bayes",
                         help='List of implemented classifiers: {}'.format(list(CLASSIFIERS.keys())))
-    parser.add_argument('--dimension', type=str, nargs=1, default="default",
+    parser.add_argument('--dimension', type=str, default="lda",
                         help='List of implemented dimension reduction systems: {}'.format(list(DIMENSION.keys())))
     parser.add_argument(
         '--train_path', default="resources/train_ocr", help='Select the training data dir')

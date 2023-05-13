@@ -33,25 +33,23 @@ FILTER_PIPELINES = {
 }
 
 CLASSIFIERS = {
-    'default': BayesClassifier(),
+    'bayes': BayesClassifier(),
     'knn': KnnClassifier(),
     'naive': NaiveBayesClassifier()
 }
 
 DIMENSION = {
-    'default': LdaDimReduction(),
+    'lda': LdaDimReduction(),
     'pca': PcaDimReduction()
 }
 
 
 def validate_and_build_args(program_args):
-    chosen_detector = DETECTORS.get(program_args.detector)
-
+    chosen_detector = DETECTORS.get(str(program_args.detector))
     if chosen_detector is None:
         raise ValueError("{} is not a valid detector".format(program_args.detector))
 
-    chosen_filter_pipeline = FILTER_PIPELINES.get(program_args.filter_pipeline)
-
+    chosen_filter_pipeline = FILTER_PIPELINES.get(str(program_args.filter_pipeline))
     if chosen_filter_pipeline is None:
         raise ValueError("{} is not a valid filter pipeline".format(program_args.filter_pipeline))
 
@@ -61,12 +59,12 @@ def validate_and_build_args(program_args):
     if not os.path.exists(program_args.test_path):
         raise ValueError("Test path {} does not exist".format(program_args.test_path))
 
-    chosen_classifier = CLASSIFIERS.get(program_args.classifier)
+    chosen_classifier = CLASSIFIERS.get(str(program_args.classifier))
 
     if chosen_classifier is None:
         raise ValueError("{} is not a valid classifier".format(program_args.classifier))
 
-    chosen_dimension = DIMENSION.get(program_args.dimension)
+    chosen_dimension = DIMENSION.get(str(program_args.dimension))
 
     if chosen_dimension is None:
         raise ValueError("{} is not a valid dimension reduction system".format(program_args.dimension))
@@ -95,18 +93,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Trains and executes a given detector over a set of testing images')
     parser.add_argument(
-        '--detector', type=str, nargs=1, default="contour-blue",
-        help='Detector implementation: {}'.format(list(DETECTORS.keys())))
+        '--detector', type=str, default="contour-blue", help='Detector implementation: {}'.format(list(DETECTORS.keys())))
     parser.add_argument(
-        '--filter_pipeline', type=str, nargs=1, default="no-overlap",
+        '--filter_pipeline', type=str, default="no-overlap",
         help='Filter pipeline implementation: {}'.format(list(FILTER_PIPELINES.keys())))
     parser.add_argument(
         '--train_path', default="resources/train_detection", help='Select the training data dir')
     parser.add_argument(
         '--test_path', default="resources/test_detection", help='Select the testing data dir')
-    parser.add_argument('--classifier', type=str, nargs=1, default="default",
+    parser.add_argument('--classifier', type=str, default="bayes",
                         help='List of implemented classifiers: {}'.format(list(CLASSIFIERS.keys())))
-    parser.add_argument('--dimension', type=str, nargs=1, default="default",
+    parser.add_argument('--dimension', type=str, default="lda",
                         help='List of implemented dimension reduction systems: {}'.format(list(DIMENSION.keys())))
     parser.add_argument(
         '--train_path_ocr', default="resources/train_ocr", help='Select the training data dir')
