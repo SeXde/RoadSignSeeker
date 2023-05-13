@@ -25,13 +25,11 @@ FILTER_PIPELINES = {
 
 
 def validate_and_build_args(program_args):
-    chosen_detector = DETECTORS.get(program_args.detector)
-
+    chosen_detector = DETECTORS.get(str(program_args.detector))
     if chosen_detector is None:
         raise ValueError("{} is not a valid detector".format(program_args.detector))
 
-    chosen_filter_pipeline = FILTER_PIPELINES.get(program_args.filter_pipeline)
-
+    chosen_filter_pipeline = FILTER_PIPELINES.get(str(program_args.filter_pipeline))
     if chosen_filter_pipeline is None:
         raise ValueError("{} is not a valid filter pipeline".format(program_args.filter_pipeline))
 
@@ -60,9 +58,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Trains and executes a given detector over a set of testing images')
     parser.add_argument(
-        '--detector', type=str, nargs=1, default="contour-blue", help='Detector implementation: {}'.format(list(DETECTORS.keys())))
+        '--detector', type=str, default="contour-blue", help='Detector implementation: {}'.format(list(DETECTORS.keys())))
     parser.add_argument(
-        '--filter_pipeline', type=str, nargs=1, default="no-overlap",
+        '--filter_pipeline', type=str, default="no-overlap",
         help='Filter pipeline implementation: {}'.format(list(FILTER_PIPELINES.keys())))
     parser.add_argument(
         '--train_path', default="resources/train_detection", help='Select the training data dir')
