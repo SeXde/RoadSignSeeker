@@ -5,7 +5,7 @@ import cv2
 from classifier.classifier import Classifier
 from common.debug_image import debug_image
 from dimension.dim_reduction import DimReduction
-from featureExtractor.feature_extractor import FeatureExtractor
+from feature_extractor.feature_extractor import FeatureExtractor
 from ransac.line_detector import LineDetector
 from threshold.default_threshold import DefaultThreshold
 

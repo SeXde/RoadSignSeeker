@@ -18,7 +18,7 @@ from classifier.knn_classifier import KnnClassifier
 from classifier.naive_bayes_classifier import NaiveBayesClassifier
 from dimension.lda_dim_reduction import LdaDimReduction
 from dimension.pca_dim_reduction import PcaDimReduction
-from featureExtractor.feature_extractor import FeatureExtractor
+from feature_extractor.feature_extractor import FeatureExtractor
 from helpers.paths import classes
 from threshold.default_threshold import DefaultThreshold
 
