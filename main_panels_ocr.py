@@ -55,14 +55,12 @@ if __name__ == "__main__":
     parser.add_argument(
         '--panels_path', default="resources/test_ocr_panels", help='Select the panels data dir')
     parser.add_argument(
-        '--show_image', default=False, help='True if you want yo display detected text inside panel. Use "n" '
-                                           'to skip images')
+        '--show_image', type=bool, default=False, help='True if you want yo display detected text inside panel. Use "n"'
+                                                       'to skip images')
 
     args = parser.parse_args()
     classifier, dimension = validate_and_build_args(args)
     ocr_path_result = OCR_PATH + "/resultado.txt"
-    if os.path.exists(ocr_path_result):
-        os.remove(ocr_path_result)
     panel_ocr = PanelTextOcr()
     panel_ocr.create(classifier, dimension)
     letters = []
@@ -75,7 +73,7 @@ if __name__ == "__main__":
         train_images_bgr = train_images_bgr + list(
             map(lambda p: read_panels_and_build_classes(class_path, p, class_letter, letters),
                 filter(lambda p: 'png' in p or 'PNG' in p, class_path_image_names))
-            )
+        )
 
     print("Training ocr with {} images ...".format(len(train_images_bgr)))
     panel_ocr.train_ocr(train_images_bgr, letters)

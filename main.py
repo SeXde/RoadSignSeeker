@@ -14,7 +14,7 @@ from dimension.lda_dim_reduction import LdaDimReduction
 from dimension.pca_dim_reduction import PcaDimReduction
 from ocr.panel_ocr import PanelTextOcr
 from pipelines.nms_pipeline import NMSPipeline
-from helpers.paths import GENERATED_IMG_PATH, classes
+from helpers.paths import GENERATED_IMG_PATH, classes, OCR_PATH
 from pipelines.default_pipeline import DefaultPipeline
 from helpers.utils import save_panels, read_panels_and_build_classes
 from helpers.colors import *
@@ -82,10 +82,12 @@ def detect_and_write_panels(image_path: str, panel_ocr_desired: PanelTextOcr):
     filtered_pois = filter_pipeline.apply(pois)
 
     image_bgr = save_panels(image_path, filtered_pois)
-    debug_image(cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB))
+    if args.show_image:
+        debug_image(cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB))
     for poi in filtered_pois:
-        panel_ocr_desired.classify_panel(cv2.imread(image_path), (poi.shape.y, poi.shape.x, poi.shape.h, poi.shape.w), image_path,
-                                         show_image=args.show_image)
+        panel_ocr_desired.classify_panel(cv2.imread(image_path), (poi.shape.y, poi.shape.x, poi.shape.h, poi.shape.w),
+                                         os.path.basename(image_path),
+                                         show_image=args.show_image, output_file=ocr_path_result)
         poi.save_to_file()
 
 
@@ -93,7 +95,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Trains and executes a given detector over a set of testing images')
     parser.add_argument(
-        '--detector', type=str, default="contour-blue", help='Detector implementation: {}'.format(list(DETECTORS.keys())))
+        '--detector', type=str, default="contour-blue",
+        help='Detector implementation: {}'.format(list(DETECTORS.keys())))
     parser.add_argument(
         '--filter_pipeline', type=str, default="no-overlap",
         help='Filter pipeline implementation: {}'.format(list(FILTER_PIPELINES.keys())))
@@ -108,12 +111,15 @@ if __name__ == "__main__":
     parser.add_argument(
         '--train_path_ocr', default="resources/train_ocr", help='Select the training data dir')
     parser.add_argument(
-        '--show_image', default=True, help='True if you want yo display detected panels and text inside them. Use "n" '
-                                           'to skip images')
+        '--show_image', type=str, default=False,
+        help='True if you want yo display detected panels and text inside them. Use "n" '
+             'to skip images')
 
     args = parser.parse_args()
     detector, filter_pipeline, classifier, dimension = validate_and_build_args(args)
-
+    ocr_path_result = OCR_PATH + "/resultado.txt"
+    if os.path.exists(ocr_path_result):
+        os.remove(ocr_path_result)
     if os.path.exists(GENERATED_IMG_PATH):
         shutil.rmtree(GENERATED_IMG_PATH)
 
