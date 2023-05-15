@@ -61,8 +61,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     classifier, dimension = validate_and_build_args(args)
     ocr_path_result = OCR_PATH + "/resultado.txt"
-    panel_ocr = PanelTextOcr()
-    panel_ocr.create(classifier, dimension)
+    panel_ocr = PanelTextOcr(classifier, dimension)
     letters = []
     train_images_bgr = []
 

@@ -20,7 +20,7 @@ from dimension.lda_dim_reduction import LdaDimReduction
 from dimension.pca_dim_reduction import PcaDimReduction
 from feature_extractor.feature_extractor import FeatureExtractor
 from helpers.paths import classes
-from threshold.default_threshold import DefaultThreshold
+from threshold.improved_threshold import ImprovedThreshold
 
 CLASSIFIERS = {
     'bayes': BayesClassifier(),
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     # 1) Cargar las imágenes de entrenamiento y sus etiquetas. 
     # También habrá que extraer los vectores de características asociados (en la parte básica 
     # umbralizar imágenes, pasar findContours y luego redimensionar)
-    default_threshold = DefaultThreshold()
+    default_threshold = ImprovedThreshold((2, 2))
     feature_extractor = FeatureExtractor()
     classifier, dimension = validate_and_build_args(args)
     c_train = []

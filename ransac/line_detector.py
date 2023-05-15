@@ -1,3 +1,5 @@
+import math
+
 import cv2
 import numpy as np
 from skimage.measure import LineModelND, ransac
@@ -42,7 +44,7 @@ class LineDetector:
             new_contours = []
             sy, ey = (0, 200)
             sx, ex = model.predict_x([sy, ey])
-            cv2.line(image_rgb, (round(sx), sy), (round(ex), ey), (225, 242, 70), 1)
+
             for i in range(len(inliers)):
                 if inliers[i]:
                     line.append(contours[i])
@@ -51,6 +53,15 @@ class LineDetector:
             if new_contours == contours:
                 break
             contours = new_contours
+
+            slope = (ey - sy) / (ex - sx) if (ey - sy) / (ex - sx) is not None else 0
+            slope = math.degrees(math.atan(slope))
+
+            if abs(slope) > 15:
+                continue
+
+            cv2.line(image_rgb, (round(sx), sy), (round(ex), ey), (225, 242, 70), 1)
+
             line = sorted(line, key=lambda c: self.get_x(c))
             lines.append(line)
         lines = sorted(lines, key=lambda l: self.get_y(l[0]))

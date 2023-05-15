@@ -125,8 +125,7 @@ if __name__ == "__main__":
 
     os.makedirs(GENERATED_IMG_PATH)
 
-    panel_ocr = PanelTextOcr()
-    panel_ocr.create(classifier, dimension)
+    panel_ocr = PanelTextOcr(classifier, dimension)
     letters = []
     train_images_bgr = []
 
