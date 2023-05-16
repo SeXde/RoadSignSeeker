@@ -27,8 +27,6 @@ class PanelTextOcr:
         c = []
         e = []
 
-        print("training")
-
         for image_BGR, letter in zip(images_bgr, classes):
             image_gray = cv2.cvtColor(image_BGR, cv2.COLOR_BGR2GRAY)
 
