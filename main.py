@@ -111,7 +111,7 @@ if __name__ == "__main__":
     parser.add_argument(
         '--train_path_ocr', default="resources/train_ocr", help='Select the training data dir')
     parser.add_argument(
-        '--show_image', type=str, default=False,
+        '--show_image', type=bool, default=False,
         help='True if you want yo display detected panels and text inside them. Use "n" '
              'to skip images')
 
